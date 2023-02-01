@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="header">
-        <h1><i class="fa-solid fa-sack-dollar"></i> My Money</h1>
+        <h1><i class="fa-solid fa-sack-dollar"></i> MoneY</h1>
         <p>Twoje wydatki pod kontrolą</p>
     </div>
     <main>
@@ -83,8 +83,8 @@
 
     <label for="category">Wybierz kategorię:</label>
     <small>( [ + ] oznacza przychód, a [ - ] oznacza wydatek)</small>
-    <select id="category">
-        <option value="none" selected>Wybierz z listy</option>
+    <select id="category" onchange="selectCategory()">
+        <option value="none" selected disabled>Wybierz z listy</option>
         <option value="income">[+] Przychód</option>
         <option value="shopping">[-] Zakupy</option>
         <option value="food">[-] Jedzenie</option>
@@ -96,6 +96,6 @@
         <button class="cancel"><i class="fas fa-window-close"></i> Anuluj</button>
     </panel>
 </div>
-
+    <script src="script.js"></script>
 </body>
 </html>
