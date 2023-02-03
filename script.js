@@ -33,7 +33,7 @@ const closePanel = () => {
 }
 
 const checkForm = () => {
-    if(nameInput.value !=='' && amountInput.value !== '' && categorySelect.value !== 'none') {
+    if (nameInput.value !== '' && amountInput.value !== '' && categorySelect.value !== 'none') {
         createNewTransaction()
     } else {
         alert('Wypełnik wszystkie pola')
@@ -41,15 +41,15 @@ const checkForm = () => {
 }
 
 const clearInputs = () => {
-    nameInput.value ='';
-    amountInput.value ='';
+    nameInput.value = '';
+    amountInput.value = '';
     categorySelect.selectedIndex = 0;
 }
 
 const createNewTransaction = () => {
     const newTransaction = document.createElement('div');
     newTransaction.classList.add('transaction');
-    newTransaction.setAttribute('id',ID);
+    newTransaction.setAttribute('id', ID);
 
     checkCategory(selectedCategory);
 
@@ -60,8 +60,9 @@ const createNewTransaction = () => {
         
     `
     amountInput.value > 0 ? incomeSection.appendChild(newTransaction) && newTransaction.classList.add('income') : expensesSection.appendChild(newTransaction) && newTransaction.classList.add('expense');
-    moneyArr.push(parseFloat(amountInput))
+    moneyArr.push(parseFloat(amountInput.value))
 
+    countMoney(moneyArr);
     closePanel();
     ID++;
     clearInputs();
@@ -72,23 +73,68 @@ const selectCategory = () => {
 }
 
 const checkCategory = transaction => {
-    switch(transaction) {
+    switch (transaction) {
         case '[+] Przychód':
-            categoryIcon ='<i class="fa-solid fa-money-check-dollar"></i>';
+            categoryIcon = '<i class="fa-solid fa-money-check-dollar"></i>';
             break;
         case '[-] Zakupy':
-            categoryIcon ='<i class="fa-solid fa-cart-shopping"></i>';
-             break;
+            categoryIcon = '<i class="fa-solid fa-cart-shopping"></i>';
+            break;
         case '[-] Jedzenie':
-            categoryIcon ='<i class="fa-solid fa-pizza-slice"></i>';
+            categoryIcon = '<i class="fa-solid fa-pizza-slice"></i>';
             break;
         case '[-] Rozrywka':
-            categoryIcon ='<i class="fa-solid fa-icons"></i>';
+            categoryIcon = '<i class="fa-solid fa-icons"></i>';
             break;
-        
+
     }
 }
 
+const countMoney = money => {
+    const newMoney = money.reduce((a, b) => a + b);
+    availableMoney.textContent = `${newMoney}zł`;
+}
+
+const deleteTransaction = id => {
+    const transactionToDelete = document.getElementById(id);
+    const transactionAmount = parseFloat(transactionToDelete.childNodes[3].innerText);
+
+    const indexOftransaction = moneyArr.indexOf(transactionAmount);
+
+    moneyArr.slice(indexOftransaction, 1);
+
+    transactionToDelete.classList.contains('income') ? incomeSection.removeChild(transactionToDelete) : expensesSection.removeChild(transactionToDelete)
+    countMoney(moneyArr)
+}
+
+const deleteAlltransaction = () => {
+    incomeSection.innerHTML = '<h3>Przychód:</h3>';
+    expensesSection.innerHTML = '<h3>Przychód:</h3>';
+    availableMoney.textContent = '0zł';
+    moneyArr = [0];
+
+}
+
+const changeStyleToLight = () => {
+    root.style.setProperty('--first-color', '#F9F9F9');
+    root.style.setProperty('--second-color', '#14161F');
+    root.style.setProperty('--border-color', 'rgba(0, 0, 0, .2)');
+
+}
+
+const changeStyleToDark = () => {
+    root.style.setProperty('--first-color', '#14161F');
+    root.style.setProperty('--second-color', '#F9F9F9');
+    root.style.setProperty('--border-color', 'rgba(255, 255, 255, .4)');
+
+}
+
+
+
+
 addTransactionBtn.addEventListener('click', showPanel);
-cancelBtn.addEventListener('click', closePanel );
-saveBtn.addEventListener('click', checkForm );
+cancelBtn.addEventListener('click', closePanel);
+saveBtn.addEventListener('click', checkForm);
+deleteAllBtn.addEventListener('click', deleteAlltransaction);
+lightBtn.addEventListener('click', changeStyleToLight)
+darkBtn.addEventListener('click', changeStyleToDark)
